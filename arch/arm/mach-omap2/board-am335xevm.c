@@ -1258,6 +1258,16 @@ static const struct flash_platform_data am335x_spi_flash = {
 	.nr_parts  = ARRAY_SIZE(am335x_spi_partitions),
 };
 
+#if 0
+static struct s3c64xx_spi_csinfo s3c64xx_spi0_fpga = {
+  	.fb_delay=0x3,
+  	.line=S3C64XX_GPP(8), /*used for FPGA now*/
+  	.set_level=cs_set_level,
+	.cfg_io = setup_pin_fpga,
+	//.cfg_fpga = cfg_fpga_pro,
+};
+#endif
+
 /*
  * SPI Flash works at 80Mhz however SPI Controller works at 48MHz.
  * So setup Max speed to be less than that of Controller speed
@@ -1270,6 +1280,15 @@ static struct spi_board_info am335x_spi0_slave_info[] = {
 		.max_speed_hz  = 24000000,
 		.bus_num       = 1,
 		.chip_select   = 0,
+	},
+	{
+		.modalias = "spi-fpga",	
+		//.platform_data = &m25p32_data,
+		.max_speed_hz = 2*1000*1000,	
+		.bus_num = 0,
+		.chip_select = 1,
+		.mode = SPI_MODE_3,	
+		//.controller_data=&s3c64xx_spi0_fpga,
 	},
 };
 
